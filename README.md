@@ -1,5 +1,7 @@
 # WP404
 
+[![Build Status](https://travis-ci.org/stevegrunwell/wp404.svg?branch=master)](https://travis-ci.org/stevegrunwell/wp404)
+
 WP404 is meant to be a developer's best friend when tracking down vague or hard-to-reproduce 404 errors reported by clients or visitors. By hooking into the `template_redirect` action, WP404 can collect as much (or as little) information about the request as you'd like and save it to your error logs, enabling you to get all sorts of information about the request.
 
 
