@@ -28,7 +28,7 @@ function template_redirect() {
 	 */
 	$report = apply_filters( 'wp404_report_data', array(), $wp_query );
 
-	// Don't write anything if $report comes back empty.
+	// Don't write anything if $report comes as a boolean FALSE.
 	if ( false === $report ) {
 		return false;
 	}
