@@ -18,3 +18,7 @@ namespace WP404;
 
 require_once __DIR__ . '/inc/core.php';
 require_once __DIR__ . '/inc/request.php';
+
+// Register the initial reporters.
+add_filter( 'wp404_report_data', __NAMESPACE__ . '\Request\server_superglobal', 10, 2 );
+add_filter( 'wp404_report_data', __NAMESPACE__ . '\Request\post_exists', 10, 2 );

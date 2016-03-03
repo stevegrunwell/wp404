@@ -19,7 +19,6 @@ function server_superglobal( $report ) {
 		'$_SERVER' => $_SERVER,
 	) );
 }
-add_filter( 'wp404_report_data', __NAMESPACE__ . '\server_superglobal' );
 
 /**
  * Try to determine if we have a post ID and, if so, get data directly from the database (bypassing
@@ -52,4 +51,3 @@ function post_exists( $report, $wp_query ) {
 		'post_data' => $post,
 	) );
 }
-add_filter( 'wp404_report_data', __NAMESPACE__ . '\post_exists', 10, 2 );
