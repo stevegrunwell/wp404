@@ -44,3 +44,11 @@ function template_redirect() {
 	) );
 }
 add_action( 'template_redirect', __NAMESPACE__ . '\template_redirect', 1 );
+
+/**
+ * Load the plugin textdomain.
+ */
+function load_textdomain() {
+	load_plugin_textdomain( 'wp404', false, WP404_DIR . '/includes' );
+}
+add_action( 'plugins_loaded', __NAMESPACE__ . '\load_textdomain' );

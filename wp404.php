@@ -16,6 +16,8 @@
 
 namespace WP404;
 
+define( 'WP404_DIR', plugin_basename( dirname( __FILE__ ) ) );
+
 require_once __DIR__ . '/inc/core.php';
 require_once __DIR__ . '/inc/reporters.php';
 
