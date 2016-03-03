@@ -75,9 +75,9 @@ Capture the $_SERVER superglobal.
 
 <dl>
 	<dt>Enabled by default?</dt>
-	<dd>No</dd>
+	<dd>Yes</dd>
 	<dt>Initial priority</dt>
-	<dd>n/a</dd>
+	<dd>10</dd>
 </dl>
 
 
@@ -132,9 +132,9 @@ Try to determine if we have a post ID and, if so, get data directly from the dat
 
 <dl>
 	<dt>Enabled by default?</dt>
-	<dd>No</dd>
+	<dd>Yes</dd>
 	<dt>Initial priority</dt>
-	<dd>n/a</dd>
+	<dd>n10</dd>
 </dl>
 
 
