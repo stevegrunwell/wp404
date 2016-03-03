@@ -17,3 +17,4 @@
 namespace WP404;
 
 require_once __DIR__ . '/inc/core.php';
+require_once __DIR__ . '/inc/request.php';
