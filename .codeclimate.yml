@@ -6,8 +6,6 @@ engines:
       - php
   fixme:
     enabled: true
-  phpcodesniffer:
-    enabled: true
 ratings:
   paths:
   - "**.php"
