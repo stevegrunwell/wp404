@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WP404
  * Plugin URI:  https://github.com/stevegrunwell/wp404
- * Description: Track details for all 404s that occur on your site.
+ * Description: Get in-depth information about the 404 errors that occur on your WordPress site.
  * Version:     0.1.0
  * Author:      Steve Grunwell
  * Author URI:  https://stevegrunwell.com
