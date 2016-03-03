@@ -26,7 +26,7 @@ function server_superglobal( $report ) {
  *
  * @global $wpdb
  *
- * @param array $report The WP404 report array.
+ * @param array    $report The WP404 report array.
  * @param WP_Query $wp_query The WP_Query object that determined the 404 status.
  * @return The filtered $report array.
  */
@@ -37,10 +37,11 @@ function post_exists( $report, $wp_query ) {
 
 	// WP_Query found something, but the user can't see it.
 	if ( 0 < $wp_query->found_posts ) {
-		$post = $wpdb->get_row( $wp_query->request );
+		$post = $wpdb->get_row( $wp_query->request ); // WPCS: unprepared SQL ok.
 
-	// We have a post ID in the query string.
 	} elseif ( $post_id = get_query_var( 'p', false ) ) {
+
+		// We have a post ID in the query string.
 		$post = $wpdb->get_row( $wpdb->prepare(
 			"SELECT * FROM $wpdb->posts WHERE ID = %d LIMIT 1",
 			$post_id

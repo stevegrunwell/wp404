@@ -7,6 +7,8 @@
 	<description>Coding standards for WP404.</description>
 
 	<!-- FILES -->
+	<exclude-pattern>Gruntfile.js</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/tests/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 
@@ -20,4 +22,8 @@
 
 	<rule ref="WordPress-Extra" />
 	<rule ref="WordPress-Docs" />
+
+	<rule ref="WordPress.PHP.DiscouragedFunctions.Discouraged">
+		<exclude-pattern>inc/core.php</exclude-pattern>
+	</rule>
 </ruleset>
