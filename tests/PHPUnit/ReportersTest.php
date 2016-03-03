@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for the Request-related reporters.
+ * Tests for the various Reporters.
  *
  * @package WP404
  * @author  Steve Grunwell
@@ -11,16 +11,16 @@ namespace WP404;
 use WP_Mock as M;
 use Mockery;
 
-class RequestTest extends TestCase {
+class ReportersTest extends TestCase {
 
 	protected $testFiles = array(
-		'request.php',
+		'reporters.php',
 	);
 
 	public function test_server_superglobal() {
 		$this->assertEquals( array(
 			'$_SERVER' => $_SERVER,
-		), Request\server_superglobal( array() ) );
+		), Reporters\server_superglobal( array() ) );
 	}
 
 	public function test_post_exists_with_found_posts() {
@@ -44,7 +44,7 @@ class RequestTest extends TestCase {
 				'ID'         => 17,
 				'post_title' => 'Hello World',
 			),
-		), Request\post_exists( array(), $wp_query ) );
+		), Reporters\post_exists( array(), $wp_query ) );
 
 		$wpdb = null;
 	}
@@ -80,7 +80,7 @@ class RequestTest extends TestCase {
 				'ID'         => 17,
 				'post_title' => 'Hello World',
 			),
-		), Request\post_exists( array(), $wp_query ) );
+		), Reporters\post_exists( array(), $wp_query ) );
 
 		$wpdb = null;
 	}
@@ -97,7 +97,7 @@ class RequestTest extends TestCase {
 
 		$this->assertEquals( array(
 			'post_data' => array(),
-		), Request\post_exists( array(), $wp_query ) );
+		), Reporters\post_exists( array(), $wp_query ) );
 	}
 
 }

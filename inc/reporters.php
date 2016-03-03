@@ -1,12 +1,12 @@
 <?php
 /**
- * WP404 listeners for request data.
+ * WP404 reporters.
  *
  * @package WP404
  * @author  Steve Grunwell
  */
 
-namespace WP404\Request;
+namespace WP404\Reporters;
 
 /**
  * Capture the $_SERVER superglobal.
