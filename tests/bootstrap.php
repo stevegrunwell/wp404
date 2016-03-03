@@ -19,8 +19,5 @@ if ( ! file_exists( __DIR__ . '/../vendor/autoload.php' ) ) {
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/test-tools/TestCase.php';
 
-// Ensure our error_log() calls are written to STDOUT.
-ini_set( 'error_log', 'php://stdout' );
-
 WP_Mock::bootstrap();
 WP_Mock::tearDown();

@@ -38,7 +38,12 @@ class CoreTest extends TestCase {
 
 		M::wpFunction( '_x', array(
 			'times'  => 1,
-			'return' => 'PREFIX: %s',
+			'return' => 'PREFIX: %s %s',
+		) );
+
+		M::wpFunction( __NAMESPACE__ . '\error_log', array(
+			'times'  => 1,
+			'args'   => array( 'PREFIX: URI ' . print_r( array(), true ) ),
 		) );
 
 		Core\template_redirect();
