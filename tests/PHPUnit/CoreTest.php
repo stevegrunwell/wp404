@@ -41,12 +41,6 @@ class CoreTest extends TestCase {
 			'return' => 'PREFIX: %s',
 		) );
 
-		M::wpFunction( 'wp_json_encode', array(
-			'times'  => 1,
-			'args'   => array( array( 'foo' => 'bar' ), JSON_PRETTY_PRINT ),
-			'return' => 'JSON_DATA',
-		) );
-
 		Core\template_redirect();
 	}
 
@@ -59,11 +53,10 @@ class CoreTest extends TestCase {
 		$this->assertFalse( Core\template_redirect() );
 	}
 
-	public function test_template_redirect_returns_early_if_report_is_empty() {
+	public function test_template_redirect_returns_early_if_report_is_false() {
 		global $wp_query;
 
 		M::wpFunction( 'is_404', array(
-			'times'  => 1,
 			'return' => true,
 		) );
 
@@ -72,10 +65,35 @@ class CoreTest extends TestCase {
 		) );
 
 		M::onFilter( 'wp404_report_data' )
-			->with( array( 'uri' => 'URI' ), $wp_query )
+			->with( array(), $wp_query )
 			->reply( false );
 
 		$this->assertFalse( Core\template_redirect() );
+	}
+
+	public function test_template_redirect_still_reports_with_empty_data() {
+		global $wp_query;
+
+		$this->markTestIncomplete( 'Not yet verifying the log output' );
+
+		M::wpFunction( 'is_404', array(
+			'return' => true,
+		) );
+
+		M::wpFunction( 'add_query_arg', array(
+			'return' => 'URI',
+		) );
+
+		M::onFilter( 'wp404_report_data' )
+			->with( array(), $wp_query )
+			->reply( array() );
+
+		M::wpFunction( '_x', array(
+			'times'  => 1,
+			'return' => "PREFIX: %s %s",
+		) );
+
+		Core\template_redirect();
 	}
 
 }
