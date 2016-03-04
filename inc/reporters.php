@@ -60,6 +60,9 @@ function server_superglobal( $report ) {
 	 *
 	 * By default, keys that contain potentially sensitive data (such as HTTP_COOKIE) will be
 	 * stripped for security purposes.
+	 *
+	 * @param array $whitelist A flat array of keys within the $_SERVER superglobal array that should
+	 *                         be captured for 404 reports.
 	 */
 	$whitelist = apply_filters( 'wp404_server_superglobal_whitelisted_keys', $whitelist );
 	$server    = array();

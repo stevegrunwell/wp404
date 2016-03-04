@@ -72,7 +72,6 @@ remove_filter( 'wp404_report_data','\WP404\Reporters\{REPORTER}', {PRIORITY}, 2 
 
 Capture the $_SERVER superglobal.
 
-
 <dl>
 	<dt>Enabled by default?</dt>
 	<dd>Yes</dd>
@@ -122,6 +121,26 @@ Capture the $_SERVER superglobal.
 		[REQUEST_TIME_FLOAT] => 1457042545.0064
 		[REQUEST_TIME] => 1457042545
 	)
+```
+
+##### Filtering the `$_SERVER` keys that are captured.
+
+Some systems store potentially sensitive information in the `$_SERVER` superglobal (for instance, WordPress cookies that could be used to hijack sessions). To keep this *out* of the log files, WP404 will only save whitelisted keys from the $_SERVER superglobal.
+
+If you'd like to adjust these keys, you can use the `wp404_server_superglobal_whitelisted_keys` filter:
+
+```php
+/**
+ * When saving the $_SERVER superglobal, only capture the REQUEST_URI and HTTP_HOST.
+ *
+ * @param array $whitelist A flat array of keys within the $_SERVER superglobal array that should
+ *                         be captured for 404 reports. Will be overridden by this callback.
+ * @return The simplified $whitelist array.
+ */
+function mytheme_set_wp404_server_keys( $whitelist ) {
+	return array( 'REQUEST_URI', 'HTTP_HOST' );
+}
+add_filter( 'wp404_server_superglobal_whitelisted_keys', 'mytheme_set_wp404_server_keys' );
 ```
 
 
