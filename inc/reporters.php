@@ -26,7 +26,7 @@ function server_superglobal( $report ) {
  *
  * @global $wpdb
  *
- * @param array    $report The WP404 report array.
+ * @param array    $report   The WP404 report array.
  * @param WP_Query $wp_query The WP_Query object that determined the 404 status.
  * @return The filtered $report array.
  */
@@ -50,5 +50,24 @@ function post_exists( $report, $wp_query ) {
 
 	return array_merge( $report, array(
 		'post_data' => $post,
+	) );
+}
+
+/**
+ * If the SAVEQUERIES constant is defined as TRUE, WordPress will log all the queries that have
+ * been made, which can help in some extreme debugging situations.
+ *
+ * @global $wpdb
+ *
+ * @param array $report The WP404 report array.
+ * @return The filtered $report array.
+ */
+function queries( $report ) {
+	global $wpdb;
+
+	$queries = ! empty( $wpdb->queries ) ? $wpdb->queries : __( 'No query data was saved.', 'wp404' );
+
+	return array_merge( $report, array(
+		'queries' => $queries,
 	) );
 }
