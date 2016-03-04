@@ -13,14 +13,73 @@ use Mockery;
 
 class ReportersTest extends TestCase {
 
+	/**
+	 * Ideally we'll have an easier way of getting this from Reporters\server_superglobal(), but this
+	 * should match the $whitelist definition in that function.
+	 * @var array $defaultServerSuperglobalWhitelist
+	 */
+	protected $defaultServerSuperglobalWhitelist = array(
+		'SERVER_SOFTWARE',
+		'REQUEST_URI',
+		'PATH',
+		'USER',
+		'HOME',
+		'FCGI_ROLE',
+		'QUERY_STRING',
+		'REQUEST_METHOD',
+		'CONTENT_TYPE',
+		'CONTENT_LENGTH',
+		'SCRIPT_NAME',
+		'DOCUMENT_URI',
+		'DOCUMENT_ROOT',
+		'SERVER_PROTOCOL',
+		'REQUEST_SCHEME',
+		'GATEWAY_INTERFACE',
+		'REMOTE_ADDR',
+		'REMOTE_PORT',
+		'SERVER_ADDR',
+		'SERVER_PORT',
+		'SERVER_NAME',
+		'REDIRECT_STATUS',
+		'SCRIPT_FILENAME',
+		'HTTP_HOST',
+		'HTTP_CONNECTION',
+		'HTTP_CACHE_CONTROL',
+		'HTTP_ACCEPT',
+		'HTTP_UPGRADE_INSECURE_REQUESTS',
+		'HTTP_USER_AGENT',
+		'HTTP_DNT',
+		'HTTP_ACCEPT_ENCODING',
+		'HTTP_ACCEPT_LANGUAGE',
+		'PHP_SELF',
+		'REQUEST_TIME_FLOAT',
+		'REQUEST_TIME',
+	);
+
 	protected $testFiles = array(
 		'reporters.php',
 	);
 
 	public function test_server_superglobal() {
+		$server  = $_SERVER;
+		$_SERVER = array(
+			'foo' => 'FOO VALUE',
+			'baz' => 'BAZ VALUE',
+		);
+
+		M::onFilter( 'wp404_server_superglobal_whitelisted_keys' )
+			->with( $this->defaultServerSuperglobalWhitelist )
+			->reply( array( 'foo', 'bar' ) );
+
 		$this->assertEquals( array(
-			'$_SERVER' => $_SERVER,
+			'$_SERVER' => array(
+				'foo' => 'FOO VALUE',
+				'bar' => '',
+			),
 		), Reporters\server_superglobal( array() ) );
+
+		// Restore $_SERVER.
+		$_SERVER = $server;
 	}
 
 	public function test_post_exists_with_found_posts() {
