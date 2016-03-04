@@ -100,4 +100,34 @@ class ReportersTest extends TestCase {
 		), Reporters\post_exists( array(), $wp_query ) );
 	}
 
+	public function test_queries() {
+		global $wpdb;
+
+		$wpdb = new \stdClass;
+		$wpdb->queries = array( 'foo', 'bar' );
+
+		$this->assertEquals( array(
+			'queries' => $wpdb->queries,
+		), Reporters\queries( array() ) );
+
+		$wpdb = null;
+	}
+
+	public function test_queries_without_save_queries() {
+		global $wpdb;
+
+		$wpdb = new \stdClass;
+		$wpdb->queries = array();
+
+		M::wpPassthruFunction( '__', array(
+			'times'  => 1,
+		) );
+
+		$this->assertEquals( array(
+			'queries' => 'No query data was saved.',
+		), Reporters\queries( array() ) );
+
+		$wpdb = null;
+	}
+
 }
