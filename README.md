@@ -1,5 +1,7 @@
 # WP404
 
+[![Build Status](https://travis-ci.org/stevegrunwell/wp404.svg?branch=master)](https://travis-ci.org/stevegrunwell/wp404)
+
 WP404 is meant to be a developer's best friend when tracking down vague or hard-to-reproduce 404 errors reported by clients or visitors. By hooking into the `template_redirect` action, WP404 can collect as much (or as little) information about the request as you'd like and save it to your error logs, enabling you to get all sorts of information about the request.
 
 
@@ -62,7 +64,7 @@ if ( function_exists( '\WP404\Core\template_redirect' ) ) {
 To remove any reporters, simply use the [`remove_filter()` function](https://codex.wordpress.org/Function_Reference/remove_filter), passing it the reporter's initial priority:
 
 ```php
-remove_filter( 'wp404_report_data','\WP404\Repoters\{REPORTER}', {PRIORITY}, 2 );
+remove_filter( 'wp404_report_data','\WP404\Reporters\{REPORTER}', {PRIORITY}, 2 );
 ```
 
 
@@ -70,12 +72,11 @@ remove_filter( 'wp404_report_data','\WP404\Repoters\{REPORTER}', {PRIORITY}, 2 )
 
 Capture the $_SERVER superglobal.
 
-
 <dl>
 	<dt>Enabled by default?</dt>
-	<dd>No</dd>
+	<dd>Yes</dd>
 	<dt>Initial priority</dt>
-	<dd>n/a</dd>
+	<dd>10</dd>
 </dl>
 
 
@@ -122,6 +123,26 @@ Capture the $_SERVER superglobal.
 	)
 ```
 
+##### Filtering the `$_SERVER` keys that are captured.
+
+Some systems store potentially sensitive information in the `$_SERVER` superglobal (for instance, WordPress cookies that could be used to hijack sessions). To keep this *out* of the log files, WP404 will only save whitelisted keys from the $_SERVER superglobal.
+
+If you'd like to adjust these keys, you can use the `wp404_server_superglobal_whitelisted_keys` filter:
+
+```php
+/**
+ * When saving the $_SERVER superglobal, only capture the REQUEST_URI and HTTP_HOST.
+ *
+ * @param array $whitelist A flat array of keys within the $_SERVER superglobal array that should
+ *                         be captured for 404 reports. Will be overridden by this callback.
+ * @return The simplified $whitelist array.
+ */
+function mytheme_set_wp404_server_keys( $whitelist ) {
+	return array( 'REQUEST_URI', 'HTTP_HOST' );
+}
+add_filter( 'wp404_server_superglobal_whitelisted_keys', 'mytheme_set_wp404_server_keys' );
+```
+
 
 #### `post_exists`
 
@@ -130,9 +151,9 @@ Try to determine if we have a post ID and, if so, get data directly from the dat
 
 <dl>
 	<dt>Enabled by default?</dt>
-	<dd>No</dd>
+	<dd>Yes</dd>
 	<dt>Initial priority</dt>
-	<dd>n/a</dd>
+	<dd>10</dd>
 </dl>
 
 
@@ -164,5 +185,63 @@ Try to determine if we have a post ID and, if so, get data directly from the dat
 		[post_type] => post
 		[post_mime_type] =>
 		[comment_count] => 2
+	)
+```
+
+#### `queries`
+
+If the `SAVEQUERIES` constant is defined as `TRUE`, WordPress will log all the queries that have been made, which can help in some extreme debugging situations.
+
+> **Note:** In order for this to capture any meaningful data, [`SAVEQUERIES` should be enabled within WordPress](https://codex.wordpress.org/Debugging_in_WordPress#SAVEQUERIES).
+
+
+<dl>
+	<dt>Enabled by default?</dt>
+	<dd>No</dd>
+	<dt>Initial priority</dt>
+	<dd>n/a</dd>
+</dl>
+
+
+##### Example output
+
+```
+[queries] => Array
+	(
+		[0] => Array
+			(
+				[0] => SELECT option_name, option_value FROM wp_options WHERE autoload = 'yes'
+				[1] => 0.00069403648376465
+				[2] => require('wp-blog-header.php'), require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), wp_not_installed, is_blog_installed, wp_load_alloptions
+			)
+
+		[1] => Array
+			(
+				[0] =>
+					SELECT ID, post_name, post_parent, post_type
+					FROM wp_posts
+					WHERE post_name IN ('draft-post')
+					AND post_type IN ('page','attachment')
+
+				[1] => 0.00027918815612793
+				[2] => require('wp-blog-header.php'), wp, WP->main, WP->parse_request, get_page_by_path
+			)
+
+		[2] => Array
+			(
+				[0] => SELECT   wp_posts.* FROM wp_posts  WHERE 1=1  AND wp_posts.post_name = 'draft-post' AND wp_posts.post_type = 'post'  ORDER BY wp_posts.post_date DESC
+				[1] => 0.00022292137145996
+				[2] => require('wp-blog-header.php'), wp, WP->main, WP->query_posts, WP_Query->query, WP_Query->get_posts
+			)
+
+		[3] => Array
+			(
+				[0] => SELECT   wp_posts.* FROM wp_posts  WHERE 1=1  AND wp_posts.post_name = 'draft-post' AND wp_posts.post_type = 'post'  ORDER BY wp_posts.post_date DESC
+				[1] => 0.00020909309387207
+				[2] => require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), call_user_func_array, WP404\Core\template_redirect, apply_filters('wp404_report_data'), call_user_func_array, WP404\Reporters\post_exists
+			)
+
+		)
+
 	)
 ```
