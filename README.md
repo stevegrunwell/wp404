@@ -134,7 +134,7 @@ Try to determine if we have a post ID and, if so, get data directly from the dat
 	<dt>Enabled by default?</dt>
 	<dd>Yes</dd>
 	<dt>Initial priority</dt>
-	<dd>n10</dd>
+	<dd>10</dd>
 </dl>
 
 
@@ -166,5 +166,63 @@ Try to determine if we have a post ID and, if so, get data directly from the dat
 		[post_type] => post
 		[post_mime_type] =>
 		[comment_count] => 2
+	)
+```
+
+#### `queries`
+
+If the `SAVEQUERIES` constant is defined as `TRUE`, WordPress will log all the queries that have been made, which can help in some extreme debugging situations.
+
+> **Note:** In order for this to capture any meaningful data, [`SAVEQUERIES` should be enabled within WordPress](https://codex.wordpress.org/Debugging_in_WordPress#SAVEQUERIES).
+
+
+<dl>
+	<dt>Enabled by default?</dt>
+	<dd>No</dd>
+	<dt>Initial priority</dt>
+	<dd>n/a</dd>
+</dl>
+
+
+##### Example output
+
+```
+[queries] => Array
+	(
+		[0] => Array
+			(
+				[0] => SELECT option_name, option_value FROM wp_options WHERE autoload = 'yes'
+				[1] => 0.00069403648376465
+				[2] => require('wp-blog-header.php'), require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), wp_not_installed, is_blog_installed, wp_load_alloptions
+			)
+
+		[1] => Array
+			(
+				[0] =>
+					SELECT ID, post_name, post_parent, post_type
+					FROM wp_posts
+					WHERE post_name IN ('draft-post')
+					AND post_type IN ('page','attachment')
+
+				[1] => 0.00027918815612793
+				[2] => require('wp-blog-header.php'), wp, WP->main, WP->parse_request, get_page_by_path
+			)
+
+		[2] => Array
+			(
+				[0] => SELECT   wp_posts.* FROM wp_posts  WHERE 1=1  AND wp_posts.post_name = 'draft-post' AND wp_posts.post_type = 'post'  ORDER BY wp_posts.post_date DESC
+				[1] => 0.00022292137145996
+				[2] => require('wp-blog-header.php'), wp, WP->main, WP->query_posts, WP_Query->query, WP_Query->get_posts
+			)
+
+		[3] => Array
+			(
+				[0] => SELECT   wp_posts.* FROM wp_posts  WHERE 1=1  AND wp_posts.post_name = 'draft-post' AND wp_posts.post_type = 'post'  ORDER BY wp_posts.post_date DESC
+				[1] => 0.00020909309387207
+				[2] => require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), call_user_func_array, WP404\Core\template_redirect, apply_filters('wp404_report_data'), call_user_func_array, WP404\Reporters\post_exists
+			)
+
+		)
+
 	)
 ```
