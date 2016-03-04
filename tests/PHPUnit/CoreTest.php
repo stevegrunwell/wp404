@@ -14,6 +14,7 @@ class CoreTest extends TestCase {
 
 	protected $testFiles = array(
 		'core.php',
+		'reporters.php',
 	);
 
 	public function test_template_redirect() {
@@ -99,6 +100,60 @@ class CoreTest extends TestCase {
 		) );
 
 		Core\template_redirect();
+	}
+
+	public function test_register_default_reporters_with_implicit_method() {
+		$callback = 'server_superglobal';
+
+		// This test depends on this function still being around.
+		if ( ! function_exists( '\WP404\Reporters\server_superglobal' ) ) {
+			$this->fail( 'The Reporters\server_superglobal() reporter is missing!' );
+		}
+
+		M::onFilter( 'wp404_default_reporters' )
+			->with( $this->get_default_reporters() )
+			->reply( array( $callback ) );
+
+		M::expectFilterAdded( 'wp404_report_data', '\WP404\Reporters\\' . $callback, 10, 2 );
+
+		Core\register_default_reporters();
+	}
+
+	public function test_register_default_reporters_with_implicit_method_in_global_namespace() {
+		$callback = 'mytheme_function';
+
+		// This test depends on this function *not* being around.
+		if ( function_exists( '\WP404\Reporters\mytheme_function' ) ) {
+			$this->fail( 'We defined mytheme_function() as a function that would never exist. Little did we know...' );
+		}
+
+		M::onFilter( 'wp404_default_reporters' )
+			->with( $this->get_default_reporters() )
+			->reply( array( $callback ) );
+
+		M::expectFilterAdded( 'wp404_report_data', $callback, 10, 2 );
+
+		Core\register_default_reporters();
+	}
+
+	public function test_register_default_reporters_with_explicit_method() {
+		$callback = 'Namespace\method';
+
+		M::onFilter( 'wp404_default_reporters' )
+			->with( $this->get_default_reporters() )
+			->reply( array( $callback ) );
+
+		M::expectFilterAdded( 'wp404_report_data', $callback, 10, 2 );
+
+		Core\register_default_reporters();
+	}
+
+	// Shortcut to get the array with the default reporters.
+	protected function get_default_reporters() {
+		return array(
+			'\WP404\Reporters\server_superglobal',
+			'\WP404\Reporters\post_exists',
+		);
 	}
 
 }
