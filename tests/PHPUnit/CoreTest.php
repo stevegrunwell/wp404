@@ -148,6 +148,56 @@ class CoreTest extends TestCase {
 		Core\register_default_reporters();
 	}
 
+	public function test_register_default_reporters_with_array_definition() {
+		$callback = array(
+			'reporter' => 'Namespace\method',
+			'priority' => 25,
+		);
+
+		M::onFilter( 'wp404_default_reporters' )
+			->with( $this->get_default_reporters() )
+			->reply( array( $callback ) );
+
+		M::wpPassthruFunction( 'wp_parse_args', array(
+			'times'  => 1,
+		) );
+
+		M::expectFilterAdded( 'wp404_report_data', $callback['reporter'], $callback['priority'], 2 );
+
+		Core\register_default_reporters();
+	}
+
+	public function test_register_default_reporters_with_class_method() {
+		$callback = array( 'MyClass', 'method' );
+
+		M::onFilter( 'wp404_default_reporters' )
+			->with( $this->get_default_reporters() )
+			->reply( array( $callback ) );
+
+		M::expectFilterAdded( 'wp404_report_data', $callback, 10, 2 );
+
+		Core\register_default_reporters();
+	}
+
+	public function test_register_default_reporters_with_nested_class_method() {
+		$callback = array(
+			'reporter' => array( 'MyClass', 'method' ),
+			'priority' => 25,
+		);
+
+		M::onFilter( 'wp404_default_reporters' )
+			->with( $this->get_default_reporters() )
+			->reply( array( $callback ) );
+
+		M::wpPassthruFunction( 'wp_parse_args', array(
+			'times'  => 1,
+		) );
+
+		M::expectFilterAdded( 'wp404_report_data', $callback['reporter'], $callback['priority'], 2 );
+
+		Core\register_default_reporters();
+	}
+
 	// Shortcut to get the array with the default reporters.
 	protected function get_default_reporters() {
 		return array(

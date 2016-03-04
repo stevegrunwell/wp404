@@ -63,19 +63,32 @@ function register_default_reporters() {
 	$reporters = apply_filters( 'wp404_default_reporters', $defaults );
 
 	foreach ( $reporters as $reporter ) {
-		$reporter_parts = explode( '\\', $reporter );
-		$priority       = 10;
+		$priority = 10;
 
-		/*
-		 * If this is true, we've been given a function with no indication as to its namespace.
-		 *
-		 * See if it's referring to a named reporter.
-		 */
-		if ( 1 === count( $reporter_parts ) ) {
-			$function_name = end( $reporter_parts );
+		// Handle [ 'reporter' => (callable), 'priority' => (int) ] syntax.
+		if ( is_array( $reporter ) && isset( $reporter['reporter'] ) ) {
+			$reporter_array = wp_parse_args( $reporter, array(
+				'priority' => $priority,
+			) );
 
-			if ( function_exists( '\WP404\Reporters\\' . $function_name ) ) {
-				$reporter = '\WP404\Reporters\\' . $function_name;
+			$reporter = $reporter_array['reporter'];
+			$priority = $reporter_array['priority'];
+		}
+
+		if ( ! is_array( $reporter ) ) {
+			$reporter_parts = explode( '\\', $reporter );
+
+			/*
+			 * If this is true, we've been given a function with no indication as to its namespace.
+			 *
+			 * See if it's referring to a named reporter.
+			 */
+			if ( 1 === count( $reporter_parts ) ) {
+				$function_name = end( $reporter_parts );
+
+				if ( function_exists( '\WP404\Reporters\\' . $function_name ) ) {
+					$reporter = '\WP404\Reporters\\' . $function_name;
+				}
 			}
 		}
 
