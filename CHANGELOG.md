@@ -6,5 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+* The `post_exists` reporter will now return a string ("No matching post data was found.") rather than an empty array if we're unable to parse any post data.
 
 [Unreleased]: https://github.com/stevegrunwell/wp404/compare/v0.1.0...master

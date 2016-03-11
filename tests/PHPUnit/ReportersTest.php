@@ -85,6 +85,8 @@ class ReportersTest extends TestCase {
 	public function test_post_exists_with_found_posts() {
 		global $wpdb;
 
+		M::wpPassthruFunction( '__' );
+
 		$wpdb = Mockery::mock( '\WP_Query' )->makePartial();
 		$wpdb->shouldReceive( 'get_row' )
 			->once()
@@ -116,6 +118,8 @@ class ReportersTest extends TestCase {
 			'args'   => array( 'p', false ),
 			'return' => 17,
 		) );
+
+		M::wpPassthruFunction( '__' );
 
 		$wpdb = Mockery::mock( '\wpdb' );
 		$wpdb->posts = 'TABLE';
@@ -154,8 +158,10 @@ class ReportersTest extends TestCase {
 			'return' => false,
 		) );
 
+		M::wpPassthruFunction( '__' );
+
 		$this->assertEquals( array(
-			'post_data' => array(),
+			'post_data' => 'No matching post data was found.',
 		), Reporters\post_exists( array(), $wp_query ) );
 	}
 
