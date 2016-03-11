@@ -90,7 +90,7 @@ function server_superglobal( $report ) {
 function post_exists( $report, $wp_query ) {
 	global $wpdb;
 
-	$post = array();
+	$post = __( 'No matching post data was found.', 'wp404' );
 
 	// WP_Query found something, but the user can't see it.
 	if ( 0 < $wp_query->found_posts ) {
