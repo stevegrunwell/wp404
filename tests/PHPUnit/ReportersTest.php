@@ -195,4 +195,21 @@ class ReportersTest extends TestCase {
 		$wpdb = null;
 	}
 
+	public function test_wp_query() {
+		$wp_query = array(
+			'public'  => 'value',
+			'private' => false,
+		);
+
+		M::wpFunction( 'wp_json_encode', array(
+			'times'  => 1,
+			'args'   => array( $wp_query ),
+			'return' => '{"public":"value"}',
+		) );
+
+		$this->assertEquals( array(
+			'wp_query' => array( 'public' => 'value' ),
+		), Reporters\wp_query( array(), $wp_query ) );
+	}
+
 }

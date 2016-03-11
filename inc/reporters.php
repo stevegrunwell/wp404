@@ -128,3 +128,22 @@ function queries( $report ) {
 		'queries' => $queries,
 	) );
 }
+
+/**
+ * Include the contents of the $wp_query object (in its entirety) in the report.
+ *
+ * Chances are this will only be used for extreme 404 debugging, but it's still nice to offer.
+ *
+ * @param array    $report   The WP404 report array.
+ * @param WP_Query $wp_query The WP_Query object that determined the 404 status.
+ * @return The filtered $report array.
+ */
+function wp_query( $report, $wp_query ) {
+
+	// Convert to JSON and back again to strip out any private properties, which will break the report.
+	$wp_query = json_decode( wp_json_encode( $wp_query ), true );
+
+	return array_merge( $report, array(
+		'wp_query' => $wp_query,
+	) );
+}

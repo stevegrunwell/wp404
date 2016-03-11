@@ -245,3 +245,204 @@ If the `SAVEQUERIES` constant is defined as `TRUE`, WordPress will log all the q
 
 	)
 ```
+
+#### `wp_query`
+
+Include the contents of the `$wp_query` object (in its entirety) in the report.
+
+Chances are this will only be used for **extreme** 404 debugging, but it's still nice to offer.
+
+
+<dl>
+	<dt>Enabled by default?</dt>
+	<dd>No</dd>
+	<dt>Initial priority</dt>
+	<dd>n/a</dd>
+</dl>
+
+
+##### Example output
+
+```
+[wp_query] => Array
+	(
+		[query] => Array
+			(
+				[page] =>
+				[name] => this-post-does-not-exist
+			)
+
+		[query_vars] => Array
+			(
+				[page] => 0
+				[name] => this-post-does-not-exist
+				[error] =>
+				[m] =>
+				[p] => 0
+				[post_parent] =>
+				[subpost] =>
+				[subpost_id] =>
+				[attachment] =>
+				[attachment_id] => 0
+				[static] =>
+				[pagename] =>
+				[page_id] => 0
+				[second] =>
+				[minute] =>
+				[hour] =>
+				[day] => 0
+				[monthnum] => 0
+				[year] => 0
+				[w] => 0
+				[category_name] =>
+				[tag] =>
+				[cat] =>
+				[tag_id] =>
+				[author] =>
+				[author_name] =>
+				[feed] =>
+				[tb] =>
+				[paged] => 0
+				[meta_key] =>
+				[meta_value] =>
+				[preview] =>
+				[s] =>
+				[sentence] =>
+				[title] =>
+				[fields] =>
+				[menu_order] =>
+				[category__in] => Array
+					(
+					)
+
+				[category__not_in] => Array
+					(
+					)
+
+				[category__and] => Array
+					(
+					)
+
+				[post__in] => Array
+					(
+					)
+
+				[post__not_in] => Array
+					(
+					)
+
+				[post_name__in] => Array
+					(
+					)
+
+				[tag__in] => Array
+					(
+					)
+
+				[tag__not_in] => Array
+					(
+					)
+
+				[tag__and] => Array
+					(
+					)
+
+				[tag_slug__in] => Array
+					(
+					)
+
+				[tag_slug__and] => Array
+					(
+					)
+
+				[post_parent__in] => Array
+					(
+					)
+
+				[post_parent__not_in] => Array
+					(
+					)
+
+				[author__in] => Array
+					(
+					)
+
+				[author__not_in] => Array
+					(
+					)
+
+				[ignore_sticky_posts] =>
+				[suppress_filters] =>
+				[cache_results] => 1
+				[update_post_term_cache] => 1
+				[update_post_meta_cache] => 1
+				[post_type] =>
+				[posts_per_page] => 10
+				[nopaging] =>
+				[comments_per_page] => 50
+				[no_found_rows] =>
+				[order] => DESC
+			)
+
+		[tax_query] =>
+		[meta_query] => Array
+			(
+				[queries] => Array
+					(
+					)
+
+				[relation] =>
+				[meta_table] =>
+				[meta_id_column] =>
+				[primary_table] =>
+				[primary_id_column] =>
+			)
+
+		[date_query] =>
+		[request] => SELECT   wp_posts.* FROM wp_posts  WHERE 1=1  AND wp_posts.post_name = 'this-post-does-not-exist' AND wp_posts.post_type = 'post'  ORDER BY wp_posts.post_date DESC
+		[posts] => Array
+			(
+			)
+
+		[post_count] => 0
+		[current_post] => -1
+		[in_the_loop] =>
+		[comment_count] => 0
+		[current_comment] => -1
+		[found_posts] => 0
+		[max_num_pages] => 0
+		[max_num_comment_pages] => 0
+		[is_single] =>
+		[is_preview] =>
+		[is_page] =>
+		[is_archive] =>
+		[is_date] =>
+		[is_year] =>
+		[is_month] =>
+		[is_day] =>
+		[is_time] =>
+		[is_author] =>
+		[is_category] =>
+		[is_tag] =>
+		[is_tax] =>
+		[is_search] =>
+		[is_feed] =>
+		[is_comment_feed] =>
+		[is_trackback] =>
+		[is_home] =>
+		[is_404] => 1
+		[is_embed] =>
+		[is_paged] =>
+		[is_admin] =>
+		[is_attachment] =>
+		[is_singular] =>
+		[is_robots] =>
+		[is_posts_page] =>
+		[is_post_type_archive] =>
+		[thumbnails_cached] =>
+		[updated_term_meta_cache] =>
+		[updated_comment_meta_cache] =>
+	)
+
+)
+```
