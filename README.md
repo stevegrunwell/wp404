@@ -64,7 +64,7 @@ if ( function_exists( '\WP404\Core\template_redirect' ) ) {
 To remove any reporters, simply use the [`remove_filter()` function](https://codex.wordpress.org/Function_Reference/remove_filter), passing it the reporter's initial priority:
 
 ```php
-remove_filter( 'wp404_report_data','\WP404\Reporters\{REPORTER}', {PRIORITY}, 2 );
+remove_filter( 'wp404_report_data','\WP404\Reporters\{REPORTER}', {PRIORITY} );
 ```
 
 
