@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 * A new reporter, `wp_query`, that tracks the contents of the `$wp_query` variable.
+* An .editorconfig file to the root of the repository (for development purposes).
 
 ### Changed
 
