@@ -21,6 +21,8 @@ class CoreTest extends TestCase {
 
 		$this->markTestIncomplete( 'Not yet verifying the log output' );
 
+		$wp_query = new \stdClass;
+
 		M::wpFunction( 'is_404', array(
 			'times'  => 1,
 			'return' => true,
@@ -31,6 +33,8 @@ class CoreTest extends TestCase {
 			'args'   => array( null, null ),
 			'return' => 'URI',
 		) );
+
+		M::expectAction( 'wp404_before_report', $wp_query );
 
 		M::onFilter( 'wp404_report_data' )
 			->with( array( 'uri' => 'URI' ), $wp_query )
@@ -47,6 +51,8 @@ class CoreTest extends TestCase {
 		) );
 
 		Core\template_redirect();
+
+		$wp_query = null;
 	}
 
 	public function test_template_redirect_returns_early_if_not_404() {
@@ -61,6 +67,8 @@ class CoreTest extends TestCase {
 	public function test_template_redirect_returns_early_if_report_is_false() {
 		global $wp_query;
 
+		$wp_query = new \stdClass;
+
 		M::wpFunction( 'is_404', array(
 			'return' => true,
 		) );
@@ -69,11 +77,15 @@ class CoreTest extends TestCase {
 			'return' => 'URI',
 		) );
 
+		M::expectAction( 'wp404_before_report', $wp_query );
+
 		M::onFilter( 'wp404_report_data' )
 			->with( array(), $wp_query )
 			->reply( false );
 
 		$this->assertFalse( Core\template_redirect() );
+
+		$wp_query = null;
 	}
 
 	public function test_template_redirect_still_reports_with_empty_data() {
@@ -81,6 +93,8 @@ class CoreTest extends TestCase {
 
 		$this->markTestIncomplete( 'Not yet verifying the log output' );
 
+		$wp_query = new \stdClass;
+
 		M::wpFunction( 'is_404', array(
 			'return' => true,
 		) );
@@ -88,6 +102,8 @@ class CoreTest extends TestCase {
 		M::wpFunction( 'add_query_arg', array(
 			'return' => 'URI',
 		) );
+
+		M::expectAction( 'wp404_before_report', $wp_query );
 
 		M::onFilter( 'wp404_report_data' )
 			->with( array(), $wp_query )
@@ -99,6 +115,8 @@ class CoreTest extends TestCase {
 		) );
 
 		Core\template_redirect();
+
+		$wp_query = null;
 	}
 
 }

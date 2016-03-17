@@ -21,7 +21,14 @@ function template_redirect() {
 	}
 
 	/**
-	 * Fires when the visitor has arrived on a 404 page.
+	 * Fires when the visitor has arrived on a 404 page, but before reporters are executed.
+	 *
+	 * @param WP_Query $wp_query The current WP_Query object.
+	 */
+	do_action( 'wp404_before_report', $wp_query );
+
+	/**
+	 * Assemble the WP404 report for the current 404 error.
 	 *
 	 * @param array    $report The data that has been compiled for this 404 error.
 	 * @param WP_Query $wp_query The WP_Query object that determined the 404 status.
